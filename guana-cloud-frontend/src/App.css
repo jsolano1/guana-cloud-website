@@ -1,184 +1,142 @@
-/* Contenedor Principal */
-#app-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
+/* =================================
+   NUEVOS ESTILOS Y MEJORAS
+   ================================= */
 
-.content-wrap {
-  flex: 1;
-}
-
-/* Estilos de Secciones */
-.section {
-  padding: 80px 5%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* Header / Navbar */
-.header {
-  padding: 20px 5%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: rgba(18, 18, 18, 0.8);
-  backdrop-filter: blur(10px);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.logo {
-  height: 40px;
-  width: auto;
-}
-
-.nav-links a {
-  margin: 0 15px;
-  color: var(--text-secondary);
-  font-weight: 500;
+/* 1. Animación y mejoras al ChatWidget */
+.chat-container {
   position: relative;
-  text-decoration: none;
+  z-index: 2;
 }
 
-.nav-links a::after {
+.chat-widget-wrapper::before {
   content: '';
   position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: -5px;
-  left: 50%;
-  background-color: var(--accent-blue);
-  transition: all 0.3s ease-in-out;
+  inset: -2px;
+  border-radius: 18px; /* Coincide con el border-radius del chat-widget + el borde */
+  background: conic-gradient(
+    from 180deg at 50% 50%,
+    rgba(0, 169, 224, 0.8) 0deg,
+    rgba(50, 205, 50, 0.8) 180deg,
+    rgba(0, 169, 224, 0.8) 360deg
+  );
+  animation: spin 4s linear infinite;
+  z-index: -1;
 }
 
-.nav-links a:hover {
-  color: var(--text-primary);
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-.nav-links a:hover::after {
-  width: 100%;
+/* 2. Animación de fondo en Hero Section */
+#tsparticles {
+  position: absolute;
+  top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
 }
 
-/* Hero Section */
 .hero {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  align-items: center;
-  min-height: 70vh;
+  position: relative;
+  overflow: hidden;
 }
 
-.hero-text h1 {
-  font-size: 3.5rem;
-  line-height: 1.2;
-  font-weight: 800;
+.hero-text {
+  z-index: 1;
+}
+
+/* 3. Sección del Producto "Kai" */
+.product-section {
+  background-color: var(--bg-secondary);
+  text-align: center;
+}
+
+.product-section h2 {
+  font-size: 2.8rem;
   margin-bottom: 20px;
 }
 
-.hero-text .highlight {
-  color: var(--accent-blue);
-}
-
-.hero-text p {
+.product-section .product-intro {
+  max-width: 800px;
+  margin: 0 auto 60px auto;
   font-size: 1.2rem;
-  margin-bottom: 30px;
+  color: var(--text-secondary);
 }
 
-.chat-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Services Section */
-.services h2 {
-  text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 60px;
-}
-
-.services-grid {
+.features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 30px;
+  text-align: left;
 }
 
-.service-card {
-  background-color: var(--bg-secondary);
+.feature-card {
+  background: var(--bg-primary);
   padding: 30px;
   border-radius: 12px;
   border: 1px solid var(--border-color);
-  transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.service-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 30px rgba(0, 169, 224, 0.1);
-}
-
-.service-card h3 {
+.feature-card .icon {
+  font-size: 2rem;
+  margin-bottom: 15px;
   color: var(--accent-blue);
-  margin-top: 0;
-  font-size: 1.5rem;
 }
 
-.service-card ul {
-  list-style-type: none;
-  padding: 0;
+.feature-card h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.4rem;
+  color: var(--text-primary);
+}
+
+.feature-card p {
   color: var(--text-secondary);
+  font-size: 1rem;
 }
 
-.service-card ul li {
-  margin-bottom: 10px;
+/* 4. Sección de Raíces (Guanacaste) */
+.roots-section {
   position: relative;
-  padding-left: 25px;
-}
-
-.service-card ul li::before {
-  content: '✓';
-  color: var(--accent-green);
-  position: absolute;
-  left: 0;
-  font-weight: bold;
-}
-
-/* Footer */
-.footer {
+  padding: 120px 5%;
+  background-image: url('./assets/guana-sunset.jpg'); /* Usaremos esta imagen */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Efecto Parallax */
+  color: #fff;
   text-align: center;
-  padding: 40px 5%;
-  border-top: 1px solid var(--border-color);
-  background-color: var(--bg-secondary);
-  margin-top: 60px;
+  z-index: 1;
 }
 
-.footer p {
-  margin: 0;
-  color: var(--text-secondary);
+.roots-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(18, 18, 18, 0.7); /* Overlay oscuro para legibilidad */
+  z-index: -1;
 }
 
-/* Responsive */
-@media (max-width: 900px) {
-  .hero {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
-  .hero-text h1 {
-    font-size: 2.8rem;
-  }
-  .chat-container {
-    margin-top: 40px;
-  }
+.roots-content {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-@media (max-width: 600px) {
-  .nav-links {
-    display: none; /* Simplificar para mobile, se podría implementar un menú hamburguesa */
-  }
-  .hero-text h1 {
-    font-size: 2.2rem;
-  }
+.roots-content h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.roots-content p {
+  font-size: 1.2rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.9);
 }
