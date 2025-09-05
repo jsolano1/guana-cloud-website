@@ -1,207 +1,557 @@
 /* =================================
-   ESTILOS PRINCIPALES Y CORRECCIONES
+   VARIABLES GLOBALES Y RESET BÁSICO
    ================================= */
-
-/* Contenedor Principal */
-#app-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.content-wrap {
-  flex: 1;
-}
-
-/* Estilos de Secciones */
-.section {
-  padding: 80px 5%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* --- Header / Navbar --- */
-.header {
-  padding: 15px 5%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: rgba(18, 18, 18, 0.7);
-  backdrop-filter: blur(12px);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  border-bottom: 1px solid var(--border-color);
-}
-
-/* NUEVO Estilo para el logo horizontal */
-.logo {
-  height: 35px; /* Ajuste de altura para el nuevo logo */
-  width: auto;
-}
-
-.nav-links a {
-  margin: 0 15px;
-  color: var(--text-secondary);
-  font-weight: 500;
-  position: relative;
-  text-decoration: none;
-  transition: color 0.3s;
-}
-
-.nav-links a:hover {
-  color: var(--text-primary);
-}
-
-/* --- Hero Section --- */
-.hero {
-  display: flex; /* CAMBIO a Flexbox para mejor control */
-  flex-direction: row; /* Alineación horizontal */
-  justify-content: space-between; /* Espacio entre texto y chat */
-  align-items: center;
-  gap: 60px;
-  min-height: 90vh;
-  position: relative;
-  overflow: hidden;
-  /* MEJORA: Fondo con imagen de Guanacaste */
-  background-image: url('./assets/guana-sunset.jpg');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed; /* Efecto Parallax */
-}
-
-/* MEJORA: Overlay con "spotlight" para el chat */
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 75% 50%, rgba(18, 18, 18, 0.7), rgba(18, 18, 18, 0.9) 35%, rgba(18, 18, 18, 0.95) 70%);
-  z-index: 1;
-}
-
-.hero-text, .chat-container {
-  z-index: 2; /* Asegura que el contenido esté sobre el overlay y las partículas */
-  flex: 1; /* Ocupa el espacio disponible */
-  max-width: 50%;
-}
-
-.hero-text h1 {
-  font-size: 3.5rem;
-  line-height: 1.2;
-  font-weight: 800;
-  margin-bottom: 20px;
-}
-
-.hero-text .highlight {
-  background: -webkit-linear-gradient(45deg, var(--accent-blue), var(--accent-green));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.hero-text p {
-  font-size: 1.2rem;
-  margin-bottom: 30px;
-}
-
-/* MEJORA: Animación de "respiración" para el chat */
-@keyframes breathing-glow {
-  0% { box-shadow: 0 0 20px 0px rgba(0, 169, 224, 0.3); }
-  50% { box-shadow: 0 0 30px 5px rgba(0, 169, 224, 0.4); }
-  100% { box-shadow: 0 0 20px 0px rgba(0, 169, 224, 0.3); }
-}
-
-.chat-widget-wrapper {
-  animation: breathing-glow 5s ease-in-out infinite;
-  border-radius: 18px; /* Redondeo para el brillo */
-}
-
-/* MEJORA: Borde animado más grueso y visible */
-.chat-widget-wrapper::before {
-  content: '';
-  position: absolute;
-  inset: -3px; /* Más grueso */
-  border-radius: 18px;
-  background: conic-gradient(
-    from 90deg at 50% 50%,
-    var(--accent-blue) 0deg,
-    var(--accent-green) 180deg,
-    var(--accent-blue) 360deg
-  );
-  animation: spin 4s linear infinite;
-  z-index: -1;
-  filter: blur(2px); /* Suaviza el gradiente */
-}
-
-/* --- Partículas --- */
-#tsparticles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1; /* Detrás del contenido, sobre el fondo */
-}
-
-
-/* --- Sección de Producto "Kai" --- */
-.product-section { /* ... estilos existentes ... */ }
-.product-intro { /* ... estilos existentes ... */ }
-.features-grid { /* ... estilos existentes ... */ }
-
-/* MEJORA: Animación en las tarjetas de Kai */
-.feature-card {
-  background: var(--bg-primary);
-  padding: 30px;
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; /* Transición suave */
-}
-
-.feature-card:hover {
-  transform: translateY(-8px) scale(1.03); /* Se eleva y crece un poco */
-  border-color: var(--accent-blue);
-  box-shadow: 0 20px 40px rgba(0, 169, 224, 0.15);
-}
-
-.feature-card .icon, .feature-card h3, .feature-card p { /* ... estilos existentes ... */ }
-
-
-/* --- Sección de Servicios --- */
-.services { /* ... estilos existentes ... */ }
-.services-grid { /* ... estilos existentes ... */ }
-.service-card { /* ... estilos existentes ... */ }
-.service-card:hover { /* ... estilos existentes ... */ }
-.service-card h3, .service-card p, .service-card ul { /* ... estilos existentes ... */ }
-
-
-/* --- Footer --- */
-.footer { /* ... estilos existentes ... */ }
-.footer p { /* ... estilos existentes ... */ }
-
-
-/* --- Responsive --- */
-@media (max-width: 900px) {
+   :root {
+    --bg-primary: #121212;
+    --bg-secondary: #1A1A1A;
+    --text-primary: #E0E0E0;
+    --text-secondary: #B0B0B0;
+    --accent-blue: #00A9E0;
+    --accent-green: #32CD32;
+    --border-color: #282828;
+    --card-bg: #1A1A1A;
+    --shadow-color: rgba(0, 0, 0, 0.4);
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    scroll-behavior: smooth;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+  }
+  
+  a {
+    color: var(--accent-blue);
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  button {
+    background-color: var(--accent-blue);
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  button:hover {
+    background-color: #008cc0;
+    transform: translateY(-2px);
+  }
+  
+  button:active {
+    transform: translateY(0);
+  }
+  
+  /* =================================
+     LAYOUT GENERAL
+     ================================= */
+  #app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .content-wrap {
+    flex: 1;
+  }
+  
+  .section {
+    padding: 100px 5%;
+    max-width: 1400px; /* Más wide */
+    margin: 0 auto;
+  }
+  
+  /* =================================
+     HEADER (NAVBAR)
+     ================================= */
+  .header {
+    padding: 15px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: transparent; /* Fondo transparente inicialmente */
+    position: fixed; /* Fixed para el scroll */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    transition: background-color 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .header.scrolled {
+    background-color: rgba(18, 18, 18, 0.9); /* Más oscuro y opaco al hacer scroll */
+    backdrop-filter: blur(10px);
+    padding: 10px 5%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  .logo {
+    height: 40px; /* Ajuste para el nuevo logo */
+    width: auto;
+  }
+  
+  .nav-links a {
+    margin: 0 20px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    position: relative;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-links a:hover {
+    color: var(--accent-blue);
+  }
+  
+  /* =================================
+     HERO SECTION
+     ================================= */
   .hero {
-    flex-direction: column; /* Apila el contenido verticalmente */
+    display: flex;
+    flex-direction: row;
+    justify-content: center; /* Centra el contenido */
+    align-items: center;
+    gap: 80px;
+    min-height: 100vh; /* Ocupa toda la altura de la vista */
+    position: relative;
+    overflow: hidden;
+    background-image: url('./assets/guana-sunset.jpg'); /* IMAGEN DE FONDO */
+    background-size: cover;
+    background-position: center;
+  }
+  
+  /* Overlay sutil para legibilidad */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(18, 18, 18, 0.7) 0%, rgba(18, 18, 18, 0.4) 50%, rgba(18, 18, 18, 0.7) 100%);
+    z-index: 0;
+  }
+  
+  .hero-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    width: 100%;
+    padding: 0 5%;
+    position: relative;
+    z-index: 1; /* Asegura que el contenido esté sobre el overlay */
+  }
+  
+  .hero-text {
+    flex: 1;
+    max-width: 55%; /* Más espacio para el texto */
+    text-align: left;
+  }
+  
+  .hero-text h1 {
+    font-size: 4.5rem; /* Más grande */
+    line-height: 1.1;
+    font-weight: 800;
+    margin-bottom: 25px;
+  }
+  
+  .hero-text .highlight {
+    background: -webkit-linear-gradient(45deg, var(--accent-blue), var(--accent-green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .hero-text p {
+    font-size: 1.3rem; /* Más grande */
+    margin-bottom: 40px;
+    color: var(--text-secondary);
+    max-width: 600px;
+  }
+  
+  /* MEJORA: ChatWidget con fondo blanco y resalte */
+  .chat-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 5%; /* Pequeño margen */
+    position: relative;
+    z-index: 1;
+  }
+  
+  .chat-widget-wrapper {
+    background-color: white; /* FONDO BLANCO */
+    border-radius: 20px;
+    padding: 10px; /* Espacio para la sombra */
+    box-shadow: 0 15px 40px var(--shadow-color); /* Sombra más pronunciada */
+    max-width: 550px; /* Más ancho */
+    width: 100%;
+    transition: transform 0.3s ease;
+  }
+  
+  .chat-widget-wrapper:hover {
+    transform: translateY(-5px); /* Pequeño efecto al pasar el cursor */
+  }
+  
+  /* =================================
+     SECTION: NUESTRAS CAPACIDADES
+     ================================= */
+  .services-section {
+    background-color: var(--bg-secondary);
     text-align: center;
-    padding-top: 100px;
-    padding-bottom: 100px;
   }
-  .hero-text, .chat-container {
-    max-width: 100%;
+  
+  .services-section h2 {
+    font-size: 3rem;
+    margin-bottom: 60px;
+    font-weight: 700;
   }
-  .hero::before { /* Ajuste del spotlight en móvil */
-    background: radial-gradient(circle at 50% 80%, rgba(18, 18, 18, 0.7), rgba(18, 18, 18, 0.9) 35%, rgba(18, 18, 18, 0.95) 70%);
+  
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    text-align: left;
   }
-}
-
-@media (max-width: 600px) {
-  .nav-links { display: none; }
-  .hero-text h1 { font-size: 2.2rem; }
-}
-
-/* Animación del borde (sin cambios) */
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+  
+  .service-card {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrar contenido dentro de la tarjeta */
+  }
+  
+  .service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 169, 224, 0.15);
+  }
+  
+  .service-card-icon {
+    width: 80px; /* Tamaño más grande para los iconos/imágenes */
+    height: 80px;
+    margin-bottom: 20px;
+    object-fit: contain;
+  }
+  
+  .service-card h3 {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    color: var(--accent-blue);
+    text-align: center;
+  }
+  
+  .service-card p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    text-align: center;
+    flex-grow: 1; /* Para que todos los párrafos tengan la misma altura si el contenido varía */
+  }
+  
+  /* Estilos de lista dentro de service-card (si se usan) */
+  .service-card ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+    text-align: left;
+  }
+  
+  .service-card ul li {
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+  }
+  
+  .service-card ul li::before {
+    content: '✓';
+    color: var(--accent-green);
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  
+  /* =================================
+     SECTION: PRODUCTO KAI (CARRUSEL)
+     ================================= */
+  .product-section {
+    text-align: center;
+    padding-bottom: 120px; /* Más espacio abajo para el carrusel */
+  }
+  
+  .product-intro {
+    max-width: 900px;
+    margin: 0 auto 80px auto;
+  }
+  
+  .product-intro .highlight {
+    font-weight: bold;
+    color: var(--accent-blue);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .product-intro h2 {
+    font-size: 3.5rem;
+    margin-bottom: 25px;
+  }
+  
+  .product-intro p {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+  }
+  
+  /* Slick Carousel Customizations */
+  .slick-slider {
+    margin: 0 auto;
+    max-width: 1200px; /* Ancho máximo para el carrusel */
+  }
+  
+  .slick-slide {
+    padding: 0 10px; /* Espacio entre las tarjetas */
+    transition: transform 0.5s ease; /* Transición para el escalado */
+    display: flex !important; /* Asegura que el carrusel maneje el flex */
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .slick-center .kai-feature-card {
+    transform: scale(1.1); /* Tarjeta central más grande */
+    border-color: var(--accent-blue);
+    box-shadow: 0 25px 50px rgba(0, 169, 224, 0.25);
+  }
+  
+  .kai-feature-card {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+    min-height: 280px; /* Altura fija para el carrusel */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    opacity: 0.7; /* Ligeramente opaco para los no-centrados */
+  }
+  
+  .slick-center .kai-feature-card {
+    opacity: 1; /* Opacidad completa para el centrado */
+  }
+  
+  .kai-feature-card .icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: var(--accent-blue);
+  }
+  
+  .kai-feature-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    white-space: nowrap; /* Evita que el título se rompa */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90%;
+  }
+  
+  .kai-feature-card p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-top: 10px;
+    display: none; /* Descripción oculta por defecto */
+  }
+  
+  .slick-center .kai-feature-card p {
+    display: block; /* Descripción visible en el centro */
+  }
+  
+  /* Flechas de Navegación del Carrusel */
+  .slick-prev:before, .slick-next:before {
+    color: var(--accent-blue);
+    font-size: 30px;
+  }
+  
+  .slick-prev {
+    left: -40px;
+  }
+  
+  .slick-next {
+    right: -40px;
+  }
+  
+  /* Dots del Carrusel */
+  .slick-dots {
+    bottom: -50px;
+  }
+  
+  .slick-dots li button:before {
+    color: var(--text-secondary);
+    font-size: 10px;
+  }
+  
+  .slick-dots li.slick-active button:before {
+    color: var(--accent-blue);
+  }
+  
+  
+  /* =================================
+     FOOTER
+     ================================= */
+  .footer {
+    padding: 30px 5%;
+    background-color: var(--bg-secondary);
+    text-align: center;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border-color);
+  }
+  
+  /* =================================
+     RESPONSIVE DESIGN
+     ================================= */
+  @media (max-width: 1024px) {
+    .hero-content {
+      flex-direction: column;
+      text-align: center;
+      gap: 40px;
+    }
+  
+    .hero-text, .chat-container {
+      max-width: 100%;
+      padding-right: 0;
+    }
+  
+    .hero-text h1 {
+      font-size: 3.5rem;
+    }
+  
+    .hero-text p {
+      font-size: 1.1rem;
+    }
+  
+    .chat-widget-wrapper {
+      max-width: 450px; /* Ajuste para tablets */
+    }
+  
+    .product-intro h2 {
+      font-size: 2.8rem;
+    }
+  
+    .slick-prev {
+      left: -25px;
+    }
+    .slick-next {
+      right: -25px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .section {
+      padding: 60px 5%;
+    }
+  
+    .header .nav-links {
+      display: none; /* Ocultar navegación en móvil, se podría implementar un menú hamburguesa */
+    }
+  
+    .header button {
+      padding: 10px 20px;
+    }
+  
+    .hero {
+      min-height: 80vh;
+      padding-top: 80px;
+      padding-bottom: 40px;
+    }
+  
+    .hero-text h1 {
+      font-size: 2.8rem;
+      margin-bottom: 15px;
+    }
+  
+    .hero-text p {
+      font-size: 1rem;
+      margin-bottom: 25px;
+    }
+  
+    .chat-widget-wrapper {
+      max-width: 380px; /* Ajuste para móviles */
+      padding: 5px;
+    }
+  
+    .services-section h2, .product-intro h2 {
+      font-size: 2.2rem;
+      margin-bottom: 40px;
+    }
+  
+    .service-card {
+      padding: 20px;
+    }
+  
+    .service-card h3 {
+      font-size: 1.4rem;
+    }
+  
+    .kai-feature-card {
+      min-height: 250px;
+    }
+  
+    .slick-prev, .slick-next {
+      font-size: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .slick-prev { left: 0px; }
+    .slick-next { right: 0px; }
+  
+    .slick-dots {
+      bottom: -30px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .header {
+      justify-content: center; /* Centrar logo y botón */
+    }
+    .header button {
+      margin-left: 20px; /* Espacio entre logo y botón */
+    }
+  
+    .hero-text h1 {
+      font-size: 2rem;
+    }
+    .hero-text p {
+      font-size: 0.9rem;
+    }
+    .chat-widget-wrapper {
+      max-width: 100%; /* Ocupar todo el ancho en pantallas muy pequeñas */
+    }
+    .service-card-icon {
+      width: 60px;
+      height: 60px;
+    }
+  }
