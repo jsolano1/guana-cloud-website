@@ -53,3 +53,4 @@ jobs:
           firebaseServiceAccount: '${{ secrets.GCP_SA_KEY }}'
           projectId: ${{ env.PROJECT_ID }}
           channelId: ${{ env.FIREBASE_CHANNEL_ID }}
+          entryPoint: ./guana-cloud-frontend
