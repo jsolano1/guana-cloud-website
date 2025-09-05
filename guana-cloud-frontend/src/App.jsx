@@ -1,7 +1,7 @@
 import React from 'react';
 import ChatWidget from './components/ChatWidget';
 import './App.css';
-import logo from './assets/logo-dark.png'; // MEJORA: Usando el nuevo logo
+import logo from './assets/logo-dark.jpeg'; // CORRECCIÓN: Usando la extensión .jpeg
 
 // Importaciones para la animación de partículas
 import Particles, { initParticlesEngine } from "@tsparticles/react";
@@ -62,7 +62,6 @@ function App() {
         <HeroSection options={particleOptions} particlesLoaded={particlesLoaded} init={init} />
         <ServicesSection services={servicesData} />
         <ProductSection />
-        {/* SECCIÓN "ROOTS" ELIMINADA */}
       </main>
       <Footer />
     </div>
