@@ -81,7 +81,8 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background-color: var(--accent-color);
+  /* Usamos un gradiente sutil del logo para el icono */
+  background: linear-gradient(45deg, #00A9E0, #32CD32);
   display: flex;
   align-items: center;
   justify-content: center;
