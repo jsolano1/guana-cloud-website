@@ -1,145 +1,161 @@
-import React, { useState, useEffect, useRef } from 'react';
-import './ChatWidget.css'; // Asumimos que tendrás un archivo CSS para los estilos
+/* ChatWidget.css - Estilos Profesionales para el Asistente */
 
-// --- Componentes de Iconos SVG ---
-// Separar los iconos en sus propios componentes mejora la legibilidad del JSX principal.
+:root {
+  --chat-bg: #1E1F22; /* Fondo oscuro principal */
+  --user-bubble-bg: #373A40; /* Burbuja del usuario */
+  --bot-bubble-bg: #2A2D31; /* Burbuja del bot */
+  --input-bg: #2A2D31; /* Fondo del campo de texto */
+  --text-primary: #F0F0F0; /* Texto principal */
+  --text-secondary: #B0B0B0; /* Texto secundario o placeholders */
+  --accent-color: #00A9E0; /* Azul del logo Guana Cloud */
+  --border-color: #373A40;
+}
 
-const SendIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="22" y1="2" x2="11" y2="13"></line>
-    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-  </svg>
-);
+.chat-widget {
+  width: 100%;
+  max-width: 500px;
+  height: 600px;
+  background-color: var(--chat-bg);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+  font-family: 'Inter', sans-serif;
+}
 
-const BotIcon = () => (
-  <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-     <path d="M12,2A10,10,0,0,0,2,12A10,10,0,0,0,12,22A10,10,0,0,0,22,12A10,10,0,0,0,12,2ZM8.5,12.5A1.5,1.5,0,1,1,10,11A1.5,1.5,0,0,1,8.5,12.5ZM15.5,12.5A1.5,1.5,0,1,1,14,11A1.5,1.5,0,0,1,15.5,12.5Z"/>
-  </svg>
-);
+.messages-area {
+  flex-grow: 1;
+  padding: 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
 
+/* Scrollbar styling */
+.messages-area::-webkit-scrollbar {
+  width: 6px;
+}
+.messages-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+.messages-area::-webkit-scrollbar-thumb {
+  background-color: var(--user-bubble-bg);
+  border-radius: 20px;
+}
 
-// --- Componente Principal del Widget de Chat ---
+.message-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 85%;
+}
 
-const ChatWidget = () => {
-  // --- Estados del Componente ---
-  // 'messages' almacena el historial de la conversación.
-  const [messages, setMessages] = useState([
-    { from: 'bot', text: 'Hola, soy el asistente de IA de Guana Cloud. ¿Cómo puedo ayudarte con tus desafíos de datos, nube o IA?' }
-  ]);
-  
-  // 'input' almacena el valor actual del campo de texto del usuario.
-  const [input, setInput] = useState('');
-  
-  // 'isLoading' controla el estado de carga para mostrar el indicador "escribiendo...".
-  const [isLoading, setIsLoading] = useState(false);
+.message-wrapper.user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
 
-  // --- Referencias y Efectos ---
-  // 'messagesEndRef' es una referencia a un elemento al final de la lista de mensajes.
-  // La usamos para hacer scroll automático hacia el último mensaje.
-  const messagesEndRef = useRef(null);
+.message {
+  padding: 12px 18px;
+  border-radius: 20px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  word-wrap: break-word;
+}
 
-  useEffect(() => {
-    // Este efecto se ejecuta cada vez que el array 'messages' cambia.
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+.message-wrapper.bot .message {
+  background-color: var(--bot-bubble-bg);
+  border-top-left-radius: 4px;
+}
 
+.message-wrapper.user .message {
+  background-color: var(--user-bubble-bg);
+  border-top-right-radius: 4px;
+}
 
-  // --- Manejador de Eventos ---
-  // 'handleSend' se encarga de toda la lógica de envío de mensajes.
-  const handleSend = async () => {
-    // Evita enviar mensajes vacíos.
-    if (!input.trim()) {
-      return;
-    }
+.bot-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--accent-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
 
-    const userMessage = { from: 'user', text: input };
-    
-    // Actualiza el estado para mostrar inmediatamente el mensaje del usuario y limpiar el input.
-    setMessages(prevMessages => [...prevMessages, userMessage]);
-    setInput('');
-    setIsLoading(true);
+.input-area {
+  padding: 16px 24px;
+  background-color: var(--chat-bg);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-    try {
-      // Obtenemos la URL de la API desde las variables de entorno de Vite.
-      // Esto permite tener diferentes URLs para desarrollo y producción.
-      const botApiUrl = `${import.meta.env.VITE_BOT_API_URL}/ask`;
+.input-area input {
+  flex-grow: 1;
+  border: none;
+  background-color: var(--input-bg);
+  border-radius: 24px;
+  padding: 12px 20px;
+  font-size: 16px;
+  color: var(--text-primary);
+  outline: none;
+  transition: box-shadow 0.2s;
+}
 
-      const response = await fetch(botApiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: userMessage.text })
-      });
+.input-area input:focus {
+  box-shadow: 0 0 0 2px var(--accent-color);
+}
 
-      // Si la respuesta del servidor no es exitosa (ej. error 500), lanzamos un error.
-      if (!response.ok) {
-        throw new Error(`Error en la respuesta de la API: ${response.status} ${response.statusText}`);
-      }
+.input-area input::placeholder {
+  color: var(--text-secondary);
+}
 
-      const data = await response.json();
-      const botMessage = { from: 'bot', text: data.answer };
+.input-area button {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--accent-color);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, opacity 0.2s;
+}
 
-      // Actualizamos el estado con la respuesta del bot.
-      setMessages(prevMessages => [...prevMessages, botMessage]);
+.input-area button:hover {
+  transform: scale(1.1);
+}
 
-    } catch (error) {
-      // Si ocurre cualquier error en el proceso (red, API, etc.), lo capturamos.
-      console.error("Error al contactar al asistente de IA:", error);
-      const errorMessage = { 
-        from: 'bot', 
-        text: 'Disculpa, estoy experimentando dificultades técnicas en este momento. Por favor, intenta de nuevo más tarde.' 
-      };
-      setMessages(prevMessages => [...prevMessages, errorMessage]);
-    } finally {
-      // Este bloque se ejecuta siempre, haya habido éxito o error.
-      // Nos aseguramos de quitar el estado de carga.
-      setIsLoading(false);
-    }
-  };
+.input-area button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: scale(1);
+}
 
-  // --- Renderizado del Componente ---
-  return (
-    <div className="chat-widget">
-      <div className="messages-area">
-        {messages.map((msg, index) => (
-          <div key={index} className={`message-wrapper ${msg.from}`}>
-            {msg.from === 'bot' && (
-              <div className="bot-icon">
-                <BotIcon />
-              </div>
-            )}
-            <div className="message">{msg.text}</div>
-          </div>
-        ))}
+/* Indicador de "escribiendo..." */
+.typing-indicator span {
+  height: 8px;
+  width: 8px;
+  background-color: var(--text-secondary);
+  border-radius: 50%;
+  display: inline-block;
+  animation: bounce 1.4s infinite ease-in-out both;
+}
 
-        {isLoading && (
-          <div className="message-wrapper bot">
-            <div className="bot-icon"><BotIcon /></div>
-            <div className="message typing-indicator">
-              <span></span><span></span><span></span>
-            </div>
-          </div>
-        )}
-        
-        {/* Este div invisible es el objetivo del auto-scroll */}
-        <div ref={messagesEndRef} />
-      </div>
+.typing-indicator span:nth-of-type(1) { animation-delay: -0.32s; }
+.typing-indicator span:nth-of-type(2) { animation-delay: -0.16s; }
 
-      <div className="input-area">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && !isLoading && handleSend()}
-          placeholder="Pregúntame sobre IA para finanzas..."
-          disabled={isLoading}
-          aria-label="Escribe tu consulta aquí"
-        />
-        <button onClick={handleSend} disabled={isLoading} aria-label="Enviar mensaje">
-          <SendIcon />
-        </button>
-      </div>
-    </div>
-  );
-};
-
-export default ChatWidget;
+@keyframes bounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1.0); }
+}
