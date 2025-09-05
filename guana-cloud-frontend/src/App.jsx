@@ -68,8 +68,7 @@ function App() {
 // Componente Header
 const Header = () => (
   <header className="header">
-    { <img src={logo} alt="Guana Cloud Logo" className="logo" /> }
-    <span style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Guana Cloud</span>
+    <img src={logo} alt="Guana Cloud Logo" className="logo" />
     <nav className="nav-links">
       <a href="#services">Servicios</a>
       <a href="#producto">Producto</a>

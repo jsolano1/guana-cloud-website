@@ -1,13 +1,13 @@
-/* ChatWidget.css - Estilos Profesionales para el Asistente */
+/* Este es el código correcto para src/components/ChatWidget.css */
 
 :root {
-  --chat-bg: #1E1F22; /* Fondo oscuro principal */
-  --user-bubble-bg: #373A40; /* Burbuja del usuario */
-  --bot-bubble-bg: #2A2D31; /* Burbuja del bot */
-  --input-bg: #2A2D31; /* Fondo del campo de texto */
-  --text-primary: #F0F0F0; /* Texto principal */
-  --text-secondary: #B0B0B0; /* Texto secundario o placeholders */
-  --accent-color: #00A9E0; /* Azul del logo Guana Cloud */
+  --chat-bg: #1E1F22;
+  --user-bubble-bg: #373A40;
+  --bot-bubble-bg: #2A2D31;
+  --input-bg: #2A2D31;
+  --text-primary: #F0F0F0;
+  --text-secondary: #B0B0B0;
+  --accent-color: #00A9E0;
   --border-color: #373A40;
 }
 
@@ -34,7 +34,6 @@
   gap: 18px;
 }
 
-/* Scrollbar styling */
 .messages-area::-webkit-scrollbar {
   width: 6px;
 }
@@ -81,7 +80,6 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  /* Usamos un gradiente sutil del logo para el icono */
   background: linear-gradient(45deg, #00A9E0, #32CD32);
   display: flex;
   align-items: center;
@@ -143,7 +141,6 @@
   transform: scale(1);
 }
 
-/* Indicador de "escribiendo..." */
 .typing-indicator span {
   height: 8px;
   width: 8px;
