@@ -1,5 +1,3 @@
-/* Este es el código correcto para src/components/ChatWidget.css */
-
 :root {
   --chat-bg: #1E1F22;
   --user-bubble-bg: #373A40;
