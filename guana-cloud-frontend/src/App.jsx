@@ -1,138 +1,130 @@
-import React, { useState, useEffect, useRef } from 'react';
-import './App.css'; // Crearemos este archivo para los estilos
+import React from 'react';
+import ChatWidget from './components/ChatWidget';
+import './App.css';
 
-// --- Iconos SVG para una apariencia más profesional ---
-const SendIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z" fill="currentColor"/>
-  </svg>
-);
+// Importa el logo (asegúrate de que la ruta sea correcta)
+// Por ahora, usaremos un placeholder de texto si no tienes la imagen en la carpeta `src`
+// Para usar tu logo, mueve `image_cc5d06.png` a `src/assets/` y renómbralo a `logo.png`
+import logo from './assets/logo.png'; 
 
-const BotIcon = () => (
-  <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-     <path d="M12,2A10,10,0,0,0,2,12A10,10,0,0,0,12,22A10,10,0,0,0,22,12A10,10,0,0,0,12,2ZM8.5,12.5A1.5,1.5,0,1,1,10,11A1.5,1.5,0,0,1,8.5,12.5ZM15.5,12.5A1.5,1.5,0,1,1,14,11A1.5,1.5,0,0,1,15.5,12.5Z"/>
-  </svg>
-);
-
-
-// --- Componente del Asistente de IA ---
-const ChatWidget = () => {
-  const [messages, setMessages] = useState([
-    { from: 'bot', text: 'Hola, soy el asistente de IA de Guana Cloud. ¿En qué desafío de datos o nube puedo ayudarte hoy?' }
-  ]);
-  const [input, setInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef(null);
-
-  // Efecto para hacer scroll automático al último mensaje
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  const handleSend = async () => {
-    if (!input.trim()) return;
-
-    const userMessage = { from: 'user', text: input };
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
-    setIsLoading(true);
-
-    try {
-      const botApiUrl = 'https://kai-api-dev-537990588927.us-central1.run.app/ask';
-
-      const response = await fetch(botApiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: input })
-      });
-
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-      const data = await response.json();
-      const botMessage = { from: 'bot', text: data.answer };
-      setMessages(prev => [...prev, botMessage]);
-
-    } catch (error) {
-      console.error("Error al contactar al asistente de IA:", error);
-      const errorMessage = { from: 'bot', text: 'Disculpa, estoy experimentando dificultades técnicas. Por favor, intenta de nuevo en un momento.' };
-      setMessages(prev => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  return (
-    <div className="chat-widget">
-      <div className="messages-area">
-        {messages.map((msg, index) => (
-          <div key={index} className={`message-wrapper ${msg.from}`}>
-            {msg.from === 'bot' && <div className="bot-icon"><BotIcon /></div>}
-            <div className={`message`}>{msg.text}</div>
-          </div>
-        ))}
-        {isLoading && (
-          <div className="message-wrapper bot">
-            <div className="bot-icon"><BotIcon /></div>
-            <div className="message typing-indicator">
-              <span></span><span></span><span></span>
-            </div>
-          </div>
-        )}
-        <div ref={messagesEndRef} />
-      </div>
-      <div className="input-area">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && !isLoading && handleSend()}
-          placeholder="Pregúntame sobre IA para finanzas, migración a la nube..."
-          disabled={isLoading}
-        />
-        <button onClick={handleSend} disabled={isLoading}>
-          <SendIcon />
-        </button>
-      </div>
-    </div>
-  );
-};
-
-
-// --- Componente Principal de la Aplicación ---
 function App() {
+
+  // Datos de los servicios para mostrarlos dinámicamente
+  const servicesData = [
+    {
+      title: "Consultoría en IA",
+      description: "Transforme su Core de Negocio con IA. Integramos soluciones de IA Generativa y Machine Learning para crear sistemas que razonan, predicen y optimizan.",
+      features: [
+        "Modelos Predictivos y Detección de Anomalías",
+        "Sistemas de Recomendación y Personalización",
+        "Automatización Inteligente de Procesos (IPA)",
+        "Asistentes Virtuales Corporativos"
+      ]
+    },
+    {
+      title: "Data Analysts & BI",
+      description: "Descubra la verdad oculta en sus datos. Traducimos data compleja en dashboards interactivos e informes ejecutivos que potencian decisiones estratégicas.",
+      features: [
+        "Dashboards en Looker, Power BI y Tableau",
+        "Análisis de Rentabilidad y Optimización",
+        "Modelado de Datos para Autoservicio",
+        "Métricas de Rendimiento y Salud del Negocio"
+      ]
+    },
+    {
+      title: "Data Engineering",
+      description: "Construimos las autopistas de su información. Diseñamos infraestructuras de datos en la nube que son robustas, escalables y seguras.",
+      features: [
+        "Arquitecturas de Data Warehouse y Data Lakes",
+        "Pipelines de ETL y ELT de Alta Velocidad",
+        "Gobernanza de Datos y Calidad",
+        "Modernización de Plataformas de Datos"
+      ]
+    },
+    {
+        title: "Data Science",
+        description: "El futuro de su negocio, modelado hoy. Usamos técnicas avanzadas para resolver problemas complejos, desde la predicción de churn hasta la optimización de riesgo.",
+        features: [
+          "Modelos de Clasificación y Regresión",
+          "Segmentación de Clientes y Comportamiento",
+          "Optimización de Precios y Demanda",
+          "Análisis de Series Temporales y Forecasting"
+        ]
+      }
+  ];
+
   return (
-    <div className="app-container">
-      <header className="app-header">
-        <h1>Guana Cloud</h1>
-        <nav>
-          <a href="#services">Servicios</a>
-          <a href="#contact">Contacto</a>
-        </nav>
-      </header>
-
-      <main>
-        <section className="hero-section">
-          <div className="hero-text">
-            <h2>Inteligencia Artificial de Alta Confianza para el Sector Financiero</h2>
-            <p>Transformamos tus datos en tu activo más valioso. Interactúa con nuestro asistente de IA y descubre el potencial que podemos desbloquear.</p>
-          </div>
-          <div className="hero-chat">
-            <ChatWidget />
-          </div>
-        </section>
-
-        {/* Aquí puedes agregar las otras secciones de tu landing page */}
-        <section id="services" className="placeholder-section">
-          <h2>Nuestros Servicios</h2>
-          <p>Próximamente: Casos de éxito y detalle de nuestras soluciones en Data, BI y Cloud.</p>
-        </section>
+    <div id="app-container">
+      <Header />
+      <main className="content-wrap">
+        <HeroSection />
+        <ServicesSection services={servicesData} />
       </main>
-
-      <footer className="app-footer">
-        <p>&copy; {new Date().getFullYear()} Guana Cloud. Todos los derechos reservados.</p>
-      </footer>
+      <Footer />
     </div>
   );
 }
+
+// Componente Header
+const Header = () => (
+  <header className="header">
+    { <img src={logo} alt="Guana Cloud Logo" className="logo" /> }
+    <span style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Guana Cloud</span>
+    <nav className="nav-links">
+      <a href="#services">Servicios</a>
+      <a href="#producto">Producto</a>
+      <a href="#nosotros">Nosotros</a>
+    </nav>
+    <button>Contáctanos</button>
+  </header>
+);
+
+// Componente Hero Section
+const HeroSection = () => (
+  <section className="section hero">
+    <div className="hero-text">
+      <h1>Inteligencia Artificial <span className="highlight">& Data</span> para líderes en LATAM.</h1>
+      <p>
+        Potenciamos a las industrias de tecnología y finanzas con soluciones de datos a la medida y nuestro asistente de IA de nueva generación.
+      </p>
+      <button>Agenda una Demostración</button>
+    </div>
+    <div className="chat-container">
+      {/* El ChatWidget con los nuevos estilos se verá perfecto aquí */}
+      <ChatWidget />
+    </div>
+  </section>
+);
+
+// Componente Services Section
+const ServicesSection = ({ services }) => (
+  <section id="services" className="section services">
+    <h2>Nuestras Capacidades: Su Ventaja Competitiva</h2>
+    <div className="services-grid">
+      {services.map((service, index) => (
+        <ServiceCard key={index} title={service.title} description={service.description} features={service.features} />
+      ))}
+    </div>
+  </section>
+);
+
+// Componente Service Card
+const ServiceCard = ({ title, description, features }) => (
+    <div className="service-card">
+        <h3>{title}</h3>
+        <p>{description}</p>
+        <ul>
+            {features.map((feature, index) => <li key={index}>{feature}</li>)}
+        </ul>
+    </div>
+);
+
+
+// Componente Footer
+const Footer = () => (
+  <footer className="footer">
+    <p>&copy; {new Date().getFullYear()} Guana Cloud. Desde Costa Rica para toda LATAM.</p>
+  </footer>
+);
 
 export default App;
