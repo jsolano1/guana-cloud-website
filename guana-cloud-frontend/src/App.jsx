@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import ChatWidget from './components/ChatWidget';
 import './App.css';
-import logo from './assets/logo.png'; 
+import logo from './assets/logo-dark.png'; // MEJORA: Usando el nuevo logo
 
 // Importaciones para la animación de partículas
 import Particles, { initParticlesEngine } from "@tsparticles/react";
@@ -23,71 +23,32 @@ function App() {
     console.log("Particles loaded", container);
   };
   
-  // Opciones de configuración para las partículas
+  // MEJORA: Opciones de partículas más sutiles
   const particleOptions = {
-    background: {
-      color: {
-        value: 'transparent',
-      },
-    },
-    fpsLimit: 120,
+    background: { color: { value: 'transparent' } },
+    fpsLimit: 60,
     interactivity: {
-      events: {
-        onHover: {
-          enable: true,
-          mode: 'repulse',
-        },
-      },
-      modes: {
-        repulse: {
-          distance: 100,
-          duration: 0.4,
-        },
-      },
+      events: { onHover: { enable: true, mode: 'repulse' } },
+      modes: { repulse: { distance: 80, duration: 0.4 } }
     },
     particles: {
-      color: {
-        value: '#373A40',
-      },
-      links: {
-        color: '#373A40',
-        distance: 150,
-        enable: true,
-        opacity: 0.3,
-        width: 1,
-      },
+      color: { value: '#555555' },
+      links: { color: '#555555', distance: 150, enable: true, opacity: 0.2, width: 1 },
       move: {
-        direction: 'none',
-        enable: true,
-        outModes: {
-          default: 'bounce',
-        },
-        random: false,
-        speed: 1,
-        straight: false,
+        direction: 'none', enable: true, outModes: { default: 'bounce' },
+        random: false, speed: 0.5, // VELOCIDAD REDUCIDA
+        straight: false
       },
-      number: {
-        density: {
-          enable: true,
-        },
-        value: 80,
-      },
-      opacity: {
-        value: 0.3,
-      },
-      shape: {
-        type: 'circle',
-      },
-      size: {
-        value: { min: 1, max: 5 },
-      },
+      number: { density: { enable: true }, value: 60 },
+      opacity: { value: 0.2 },
+      shape: { type: 'circle' },
+      size: { value: { min: 1, max: 3 } }
     },
     detectRetina: true,
   };
 
-  // Datos de los servicios y producto
+  // Datos (sin cambios)
   const servicesData = [
-    // ... (mismos datos de servicios que antes)
     { title: "Consultoría en IA", description: "Transforme su Core de Negocio con IA. Integramos soluciones de IA Generativa y Machine Learning para crear sistemas que razonan, predicen y optimizan.", features: ["Modelos Predictivos y Detección de Anomalías", "Sistemas de Recomendación y Personalización", "Automatización Inteligente de Procesos (IPA)", "Asistentes Virtuales Corporativos"] },
     { title: "Data Analysts & BI", description: "Descubra la verdad oculta en sus datos. Traducimos data compleja en dashboards interactivos e informes ejecutivos que potencian decisiones estratégicas.", features: ["Dashboards en Looker, Power BI y Tableau", "Análisis de Rentabilidad y Optimización", "Modelado de Datos para Autoservicio", "Métricas de Rendimiento y Salud del Negocio"] },
     { title: "Data Engineering", description: "Construimos las autopistas de su información. Diseñamos infraestructuras de datos en la nube que son robustas, escalables y seguras.", features: ["Arquitecturas de Data Warehouse y Data Lakes", "Pipelines de ETL y ELT de Alta Velocidad", "Gobernanza de Datos y Calidad", "Modernización de Plataformas de Datos"] },
@@ -101,7 +62,7 @@ function App() {
         <HeroSection options={particleOptions} particlesLoaded={particlesLoaded} init={init} />
         <ServicesSection services={servicesData} />
         <ProductSection />
-        <RootsSection />
+        {/* SECCIÓN "ROOTS" ELIMINADA */}
       </main>
       <Footer />
     </div>
@@ -116,7 +77,7 @@ const Header = () => (
     <nav className="nav-links">
       <a href="#services">Servicios</a>
       <a href="#product">Producto</a>
-      <a href="#roots">Nosotros</a>
+      <a href="#contact">Contacto</a>
     </nav>
     <button>Contáctanos</button>
   </header>
@@ -183,15 +144,6 @@ const FeatureCard = ({ icon, title, description }) => (
       <h3>{title}</h3>
       <p>{description}</p>
     </div>
-);
-
-const RootsSection = () => (
-  <section id="roots" className="roots-section">
-    <div className="roots-content">
-      <h2>Nacidos en Costa Rica, con visión para LATAM</h2>
-      <p>Nuestra identidad está inspirada en la majestuosidad del árbol de Guanacaste: fuerte, con raíces profundas y una vasta copa que da cobijo. Así es nuestra tecnología: robusta, confiable y diseñada para potenciar el crecimiento de nuestros clientes en toda Latinoamérica.</p>
-    </div>
-  </section>
 );
 
 const Footer = () => (
