@@ -1,141 +1,94 @@
-/* ChatWidget.css - Estilos Profesionales para el Asistente */
+import React, { useState, useEffect, useRef } from 'react';
+import './ChatWidget.css';
+import logoSquare from '../assets/logo-square.png'; // Importa el nuevo logo cuadrado
 
-.chat-widget {
-  width: 100%;
-  max-width: 500px;
-  height: 600px;
-  background-color: var(--chat-bg);
-  border-radius: 16px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  border: 1px solid var(--border-color);
-  font-family: 'Inter', sans-serif;
-}
+// --- Componentes de Iconos (sin cambios) ---
+const SendIcon = () => ( /* ... (código del icono sin cambios) ... */ );
+const BotIcon = () => ( /* ... (código del icono sin cambios) ... */ );
 
-.messages-area {
-  flex-grow: 1;
-  padding: 24px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
+// --- Hook Personalizado para el efecto de escritura ---
+const useTypingEffect = (text, speed = 50) => {
+  const [displayText, setDisplayText] = useState('');
 
-/* Scrollbar styling */
-.messages-area::-webkit-scrollbar { width: 6px; }
-.messages-area::-webkit-scrollbar-track { background: transparent; }
-.messages-area::-webkit-scrollbar-thumb {
-  background-color: var(--user-bubble-bg);
-  border-radius: 20px;
-}
+  useEffect(() => {
+    let i = 0;
+    const typingInterval = setInterval(() => {
+      if (i < text.length) {
+        setDisplayText(prev => prev + text.charAt(i));
+        i++;
+      } else {
+        clearInterval(typingInterval);
+      }
+    }, speed);
 
-.message-wrapper {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  max-width: 85%;
-}
+    return () => {
+      clearInterval(typingInterval);
+    };
+  }, [text, speed]);
 
-.message-wrapper.user {
-  align-self: flex-end;
-  flex-direction: row-reverse;
-}
+  return displayText;
+};
 
-.message {
-  padding: 12px 18px;
-  border-radius: 20px;
-  line-height: 1.5;
-  color: var(--text-primary);
-  word-wrap: break-word;
-}
+// --- Componente Principal del Widget de Chat ---
+const ChatWidget = () => {
+  const initialBotMessage = 'Hola, soy el asistente de IA de Guana Cloud. ¿Cómo puedo ayudarte con tus desafíos de datos, nube o IA?';
+  const animatedMessage = useTypingEffect(initialBotMessage);
 
-.message-wrapper.bot .message {
-  background-color: var(--bot-bubble-bg);
-  border-top-left-radius: 4px;
-}
+  const [messages, setMessages] = useState([]); // Inicia vacío
+  const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef(null);
 
-.message-wrapper.user .message {
-  background-color: var(--user-bubble-bg);
-  border-top-right-radius: 4px;
-}
+  // Efecto para añadir el mensaje animado una vez que termina
+  useEffect(() => {
+    if (animatedMessage === initialBotMessage) {
+      setMessages([{ from: 'bot', text: animatedMessage }]);
+    }
+  }, [animatedMessage, initialBotMessage]);
 
-.bot-icon {
-  flex-shrink: 0;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: linear-gradient(45deg, #00A9E0, #32CD32);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-}
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
-.input-area {
-  padding: 16px 24px;
-  background-color: var(--chat-bg);
-  border-top: 1px solid var(--border-color);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+  const handleSend = async () => { /* ... (sin cambios en esta función) ... */ };
 
-.input-area input {
-  flex-grow: 1;
-  border: none;
-  background-color: var(--input-bg);
-  border-radius: 24px;
-  padding: 12px 20px;
-  font-size: 16px;
-  color: var(--text-primary);
-  outline: none;
-  transition: box-shadow 0.2s;
-}
+  return (
+    <div className="chat-widget">
+      {/* NUEVA CABECERA */}
+      <div className="chat-header">
+        <img src={logoSquare} alt="Guana Cloud" className="chat-header-logo" />
+        <h3 className="chat-header-title">Asistente Virtual Kai</h3>
+      </div>
+      <div className="messages-area">
+        {/* Renderiza el mensaje animado primero */}
+        {messages.length === 0 && (
+          <div className="message-wrapper bot">
+            <div className="bot-icon"><BotIcon /></div>
+            <div className="message">{animatedMessage}</div>
+          </div>
+        )}
+        {/* Renderiza el historial completo después */}
+        {messages.map((msg, index) => (
+          <div key={index} className={`message-wrapper ${msg.from}`}>
+            {msg.from === 'bot' && <div className="bot-icon"><BotIcon /></div>}
+            <div className="message">{msg.text}</div>
+          </div>
+        ))}
+        {isLoading && (
+          <div className="message-wrapper bot">
+            <div className="bot-icon"><BotIcon /></div>
+            <div className="message typing-indicator">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        )}
+        <div ref={messagesEndRef} />
+      </div>
+      <div className="input-area">
+        {/* ... (sin cambios en el JSX del input area) ... */ }
+      </div>
+    </div>
+  );
+};
 
-.input-area input:focus {
-  box-shadow: 0 0 0 2px var(--accent-color);
-}
-
-.input-area input::placeholder { color: var(--text-secondary); }
-
-.input-area button {
-  flex-shrink: 0;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: none;
-  background-color: var(--accent-color);
-  color: white;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s, opacity 0.2s;
-}
-
-.input-area button:hover { transform: scale(1.1); }
-.input-area button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: scale(1);
-}
-
-/* Indicador de "escribiendo..." */
-.typing-indicator span {
-  height: 8px;
-  width: 8px;
-  background-color: var(--text-secondary);
-  border-radius: 50%;
-  display: inline-block;
-  animation: bounce 1.4s infinite ease-in-out both;
-}
-
-.typing-indicator span:nth-of-type(1) { animation-delay: -0.32s; }
-.typing-indicator span:nth-of-type(2) { animation-delay: -0.16s; }
-
-@keyframes bounce {
-  0%, 80%, 100% { transform: scale(0); }
-  40% { transform: scale(1.0); }
-}
+export default ChatWidget;
