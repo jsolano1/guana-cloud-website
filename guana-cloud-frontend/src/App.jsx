@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ChatWidget from './components/ChatWidget';
 import './App.css';
-import logo from './assets/logo-white-bg.png'; // ¡Verifica que esta ruta y extensión sean correctas!
+import logo from './assets/logo-white-bg.png';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -24,13 +24,12 @@ function App() {
   }, []);
 
   const servicesData = [
-    { title: "Consultoría en IA", description: "Transforme su Core de Negocio con IA. Integramos soluciones de IA Generativa y Machine Learning para crear sistemas que razonan, predicen y optimizan.", image: servicioIA },
+    { title: "IA Consulting", description: "Transforme su Core de Negocio con IA. Integramos soluciones de IA Generativa y Machine Learning para crear sistemas que razonan, predicen y optimizan.", image: servicioIA },
     { title: "Data Analysts & BI", description: "Descubra la verdad oculta en sus datos. Traducimos data compleja en dashboards interactivos e informes ejecutivos que potencian decisiones estratégicas.", image: servicioAnalyst },
     { title: "Data Engineering", description: "Construimos las autopistas de su información. Diseñamos infraestructuras de datos en la nube que son robustas, escalables y seguras.", image: servicioEngineering },
     { title: "Data Science", description: "El futuro de su negocio, modelado hoy. Usamos técnicas avanzadas para resolver problemas complejos, desde la predicción de churn hasta la optimización de riesgo.", image: servicioScientist }
   ];
 
-  // DATOS DE KAI REINTRODUCIDOS
   const kaiFeatures = [
     { icon: "🧠", title: "Analista de Datos Autónomo", description: "Haga preguntas de negocio en lenguaje natural. Kai las traduce a consultas SQL, las ejecuta y le entrega la respuesta que necesita, al instante." },
     { icon: "🎟️", title: "Soporte Inteligente", description: "Automatiza todo el ciclo de vida de los tiquetes de soporte, desde la creación y priorización inteligente hasta la asignación y el cierre." },
@@ -121,9 +120,9 @@ const ProductSection = ({ features }) => {
         infinite: true,
         centerPadding: "80px",
         slidesToShow: 3,
-        speed: 700, // Transición más suave
+        speed: 700,
         autoplay: true,
-        autoplaySpeed: 5000, // MÁS LENTO
+        autoplaySpeed: 5000,
         responsive: [
             { breakpoint: 1200, settings: { slidesToShow: 2, centerPadding: '60px' } },
             { breakpoint: 768, settings: { slidesToShow: 1, centerPadding: '40px' } }
