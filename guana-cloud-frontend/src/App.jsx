@@ -7,6 +7,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 // --- IMPORTA TUS IMÁGENES DE SERVICIOS ---
+// ¡VERIFICA QUE ESTOS NOMBRES COINCIDAN EXACTAMENTE CON LOS ARCHIVOS EN src/assets!
 import servicioIA from './assets/servicio-ia.jpg';
 import servicioAnalyst from './assets/servicio-analyst.jpg';
 import servicioEngineering from './assets/servicio-engineering.jpg';
@@ -31,7 +32,12 @@ function App() {
   ];
 
   const kaiFeatures = [
-    // ... (mismos datos de features de Kai)
+    { icon: "🧠", title: "Analista de Datos Autónomo", description: "Haga preguntas de negocio en lenguaje natural. Kai las traduce a consultas SQL, las ejecuta y le entrega la respuesta que necesita, al instante." },
+    { icon: "🎟️", title: "Soporte Inteligente", description: "Automatiza todo el ciclo de vida de los tiquetes de soporte, desde la creación y priorización inteligente hasta la asignación y el cierre." },
+    { icon: "🔗", title: "Orquestador de Tareas", description: "Se integra con Asana, Looker y Google Calendar para convertir conversaciones en acciones, creando tareas y agendando reuniones sin salir del chat." },
+    { icon: "📚", title: "Conocimiento Centralizado", description: "Responde al instante preguntas complejas basándose en su base de conocimiento interna, actuando como el experto siempre disponible de su equipo." },
+    { icon: "📊", title: "Visualización Multimodal", description: "Genere dashboards de Looker o infografías visuales sobre el estado de sus proyectos directamente desde una conversación." },
+    { icon: "💻", title: "Code Review por IA", description: "Acelere sus ciclos de desarrollo. Kai puede realizar revisiones de código en sus Pull Requests de Dataform y LookML, garantizando calidad y consistencia." }
   ];
 
   return (
@@ -63,7 +69,7 @@ const Header = ({ isScrolled }) => (
 const HeroSection = () => (
   <section className="hero">
     <div className="hero-text">
-      <h1>Inteligencia Artificial <span className="highlight">& Data</span> para líderes en LATAM.</h1>
+      <h1>Inteligencia <span className="highlight">Artificial & Data</span> para líderes en LATAM.</h1> {/* Clase highlight reintroducida */}
       <p>Transformamos datos en su activo más valioso. Interactúe con nuestro asistente y descubra el potencial que podemos desbloquear juntos.</p>
     </div>
     <div className="chat-container">
@@ -80,15 +86,17 @@ const ServicesSection = ({ services }) => (
       <h2>Nuestras Capacidades</h2>
       <p>Desde la estrategia hasta la implementación, nuestro equipo senior lo acompaña en cada paso de su viaje hacia una cultura basada en datos.</p>
     </div>
-    {services.map((service, index) => (
-      <ServiceItem
-        key={index}
-        title={service.title}
-        description={service.description}
-        image={service.image}
-        isReversed={index % 2 !== 0} // Alterna la dirección
-      />
-    ))}
+    <div className="service-item-wrapper"> {/* Nuevo contenedor para los items */}
+      {services.map((service, index) => (
+        <ServiceItem
+          key={index}
+          title={service.title}
+          description={service.description}
+          image={service.image}
+          isReversed={index % 2 !== 0} // Alterna la dirección
+        />
+      ))}
+    </div>
   </section>
 );
 
@@ -111,14 +119,14 @@ const ProductSection = ({ features }) => {
         className: "center",
         centerMode: true,
         infinite: true,
-        centerPadding: "60px",
+        centerPadding: "80px", // Ajuste para que los lados se vean un poco más
         slidesToShow: 3,
         speed: 500,
         autoplay: true,
         autoplaySpeed: 3000,
         responsive: [
-            { breakpoint: 1024, settings: { slidesToShow: 1, centerPadding: '100px' } },
-            { breakpoint: 768, settings: { slidesToShow: 1, centerPadding: '40px' } }
+            { breakpoint: 1200, settings: { slidesToShow: 2, centerPadding: '60px' } }, // Mostrar 2 en pantallas medianas
+            { breakpoint: 768, settings: { slidesToShow: 1, centerPadding: '40px' } } // Mostrar 1 en móviles
         ]
     };
 
@@ -131,7 +139,7 @@ const ProductSection = ({ features }) => {
             </div>
             <Slider {...settings}>
                 {features.map((feature, index) => (
-                    <div key={index}>
+                    <div key={index}> {/* Importante envolver en un div para slick */}
                         <KaiFeatureCard icon={feature.icon} title={feature.title} description={feature.description} />
                     </div>
                 ))}

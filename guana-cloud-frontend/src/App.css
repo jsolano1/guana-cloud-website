@@ -72,7 +72,7 @@
   }
   
   /* =================================
-     HERO SECTION (PANORÁMICO)
+     HERO SECTION (PANORÁMICO Y CHAT ABAJO)
      ================================= */
   .hero {
     display: flex;
@@ -88,6 +88,7 @@
     background-image: url('./assets/guana-sunset.jpg');
     background-size: cover;
     background-position: center;
+    background-attachment: fixed; /* Efecto parallax sutil */
   }
   
   .hero::before {
@@ -110,6 +111,12 @@
     margin-bottom: 20px;
   }
   
+  .hero-text .highlight { /* Estilo para "Artificial & Data" */
+    background: -webkit-linear-gradient(45deg, var(--accent-blue), var(--accent-green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
   .hero-text p {
     font-size: 1.3rem;
     color: var(--text-secondary);
@@ -120,24 +127,34 @@
   .chat-container {
     display: flex;
     justify-content: center;
+    margin-top: 60px; /* Separar más el chat del título */
   }
   
   .chat-widget-wrapper {
-    background-color: white; /* FONDO BLANCO */
+    background-color: white;
     border-radius: 16px;
     padding: 8px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6); /* Sombra mejorada */
     width: 100%;
-    max-width: 700px; /* MÁS ANCHO */
-    height: 550px; /* Altura mantenida */
+    max-width: 750px; /* Más ancho */
+    height: 550px;
+    overflow: hidden; /* Para asegurar que el chatwidget no se salga */
+  }
+  
+  /* Estilos para el ChatWidget interno (si es posible influir en ellos) */
+  .chat-widget-wrapper iframe {
+    border: none;
+    width: 100%;
+    height: 100%;
   }
   
   /* =================================
-     SECCIÓN DE CAPACIDADES (ZIGZAG)
+     SECCIÓN DE CAPACIDADES (ZIGZAG AMPLIO)
      ================================= */
   .services-section {
     padding: 100px 5%;
     background-color: var(--bg-secondary);
+    width: 100%; /* Ocupar todo el ancho */
   }
   
   .services-intro {
@@ -151,14 +168,21 @@
     margin-bottom: 20px;
   }
   
+  .service-item-wrapper { /* Contenedor para alinear los service-items */
+    max-width: 1400px; /* Más ancho */
+    margin: 0 auto;
+  }
+  
   .service-item {
     display: flex;
     align-items: center;
-    gap: 60px;
-    margin-bottom: 80px;
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
+    gap: 80px; /* Más espacio entre imagen y texto */
+    margin-bottom: 120px; /* Más espacio entre servicios */
+    padding: 0 40px; /* Padding para evitar que se peguen a los bordes */
+  }
+  
+  .service-item:last-child {
+      margin-bottom: 0;
   }
   
   /* Estilo para filas invertidas */
@@ -168,45 +192,104 @@
   
   .service-image {
     flex: 1;
-    max-width: 50%;
+    max-width: 55%; /* Más espacio para la imagen */
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
   .service-image img {
     width: 100%;
+    max-width: 600px; /* Limitar el tamaño máximo de la imagen */
+    height: 380px; /* Altura fija para simetría */
+    object-fit: cover; /* Recortar para llenar el espacio */
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
   }
   
   .service-text {
     flex: 1;
-    max-width: 50%;
+    max-width: 45%; /* Espacio para el texto */
+    text-align: left;
   }
   
   .service-text h3 {
-    font-size: 2rem;
+    font-size: 2.2rem; /* Título más grande */
     color: var(--accent-blue);
-    margin-bottom: 15px;
+    margin-bottom: 18px;
   }
   
   .service-text p {
     color: var(--text-secondary);
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    font-size: 1.1rem;
   }
+  
+  .service-text button {
+    background-color: var(--accent-blue);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .service-text button:hover {
+    background-color: #008cc0;
+  }
+  
   
   /* =================================
      SECCIÓN PRODUCTO KAI (CARRUSEL MEJORADO)
      ================================= */
-  .product-section { /* ... estilos existentes ... */ }
-  .product-intro { /* ... estilos existentes ... */ }
-  .slick-slider { /* ... estilos existentes ... */ }
+  .product-section {
+    text-align: center;
+    padding-bottom: 120px;
+    padding-top: 80px;
+  }
+  
+  .product-intro {
+    max-width: 900px;
+    margin: 0 auto 80px auto;
+  }
+  
+  .product-intro .highlight {
+    font-weight: bold;
+    color: var(--accent-blue);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .product-intro h2 {
+    font-size: 3.5rem;
+    margin-bottom: 25px;
+  }
+  
+  .product-intro p {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+  }
+  
+  /* Slick Carousel Customizations */
+  .slick-slider {
+    margin: 0 auto;
+    max-width: 1300px; /* Más ancho para el carrusel */
+  }
+  
+  .slick-list {
+      padding: 20px 0 !important; /* Espacio vertical para sombras */
+  }
   
   .slick-slide {
-    padding: 0 15px;
-    transition: transform 0.5s ease, opacity 0.5s ease;
+    padding: 0 15px; /* Espacio entre las tarjetas */
+    transition: all 0.4s ease-in-out;
   }
   
   .slick-slide > div {
-    width: 100%;
+    height: 100%; /* Asegurar que el div interno también ocupe altura */
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
   .kai-feature-card {
@@ -215,43 +298,253 @@
     border-radius: 12px;
     border: 1px solid var(--border-color);
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    min-height: 280px;
-    display: flex !important; /* Forzar flex */
+    min-height: 320px; /* Altura consistente */
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     opacity: 0.6;
-    transform: scale(0.85); /* Más pequeño por defecto */
+    transform: scale(0.88); /* Ligeramente más pequeño por defecto */
     transition: all 0.4s ease-in-out;
   }
   
   .slick-center .kai-feature-card {
     opacity: 1;
-    transform: scale(1); /* Tamaño normal en el centro */
+    transform: scale(1.05); /* Más grande en el centro */
     background: var(--bg-secondary);
     border-color: var(--accent-blue);
-    box-shadow: 0 20px 45px rgba(0, 169, 224, 0.2);
+    box-shadow: 0 25px 55px rgba(0, 169, 224, 0.28); /* Sombra más pronunciada */
   }
   
-  .kai-feature-card .icon { /* ... estilos existentes ... */ }
-  .kai-feature-card h3 { /* ... estilos existentes ... */ }
+  .kai-feature-card .icon {
+    font-size: 2.8rem; /* Iconos más grandes */
+    margin-bottom: 15px;
+    color: var(--accent-blue);
+  }
+  
+  .kai-feature-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.6rem; /* Título más grande */
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90%;
+  }
+  
   .kai-feature-card p {
-    display: none;
+    color: var(--text-secondary);
+    font-size: 1rem; /* Descripción más legible */
+    line-height: 1.5;
+    margin-top: 10px;
+    display: none; /* Descripción oculta por defecto */
+    padding: 0 15px;
   }
   
   .slick-center .kai-feature-card p {
-    display: block;
+    display: block; /* Descripción visible en el centro */
   }
   
-  /* Flechas y Dots del Carrusel */
+  /* Flechas de Navegación del Carrusel */
+  .slick-prev, .slick-next {
+      width: 40px;
+      height: 40px;
+      z-index: 10;
+  }
+  
   .slick-prev:before, .slick-next:before {
+    font-family: 'slick';
+    font-size: 40px; /* Flechas más grandes */
+    line-height: 1;
+    opacity: 0.75;
     color: var(--accent-blue);
-    font-size: 30px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+  
+  .slick-prev {
+    left: -50px; /* Más afuera */
+  }
+  
+  .slick-next {
+    right: -50px; /* Más afuera */
+  }
+  
+  /* Dots del Carrusel */
+  .slick-dots {
+    bottom: -60px; /* Más abajo */
+  }
+  
   .slick-dots li button:before {
+    font-size: 12px; /* Dots más grandes */
     color: var(--text-secondary);
+    opacity: 0.5;
   }
+  
   .slick-dots li.slick-active button:before {
     color: var(--accent-blue);
+    opacity: 1;
+  }
+  
+  /* =================================
+     FOOTER
+     ================================= */
+  .footer {
+    padding: 30px 5%;
+    background-color: var(--bg-secondary);
+    text-align: center;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border-color);
+  }
+  
+  /* =================================
+     RESPONSIVE DESIGN
+     ================================= */
+  @media (max-width: 1200px) {
+      .service-item {
+          gap: 40px;
+          padding: 0 20px;
+      }
+      .service-image img {
+          height: 300px;
+      }
+      .service-text h3 {
+          font-size: 1.8rem;
+      }
+      .hero-text h1 {
+          font-size: 3.8rem;
+      }
+      .chat-widget-wrapper {
+          max-width: 600px;
+      }
+  }
+  
+  @media (max-width: 992px) {
+    .hero-text h1 {
+      font-size: 3rem;
+    }
+    .hero-text p {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+    }
+    .chat-container {
+        margin-top: 40px;
+    }
+    .chat-widget-wrapper {
+        max-width: 500px;
+        height: 480px;
+    }
+  
+    .service-item {
+      flex-direction: column; /* Apilar en columnas */
+      gap: 30px;
+      margin-bottom: 80px;
+      padding: 0;
+    }
+    .service-item:nth-child(even) {
+      flex-direction: column; /* También apilar para impares */
+    }
+    .service-image, .service-text {
+      max-width: 90%; /* Ocupar más ancho en móvil */
+    }
+    .service-image img {
+      height: auto; /* Altura auto para mantener proporciones */
+    }
+    .service-text {
+        text-align: center; /* Centrar texto en móvil */
+    }
+  
+    .services-intro h2, .product-intro h2 {
+      font-size: 2.5rem;
+    }
+  
+    .slick-slider {
+        max-width: 90%;
+    }
+    .slick-prev { left: -30px; }
+    .slick-next { right: -30px; }
+    .kai-feature-card {
+        min-height: 280px;
+        transform: scale(0.95);
+    }
+    .slick-center .kai-feature-card {
+        transform: scale(1.02);
+    }
+    .kai-feature-card h3 {
+        font-size: 1.4rem;
+    }
+    .kai-feature-card p {
+        font-size: 0.9rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .header .nav-links {
+      display: none; /* Ocultar en móvil */
+    }
+    .header {
+        justify-content: center;
+        gap: 20px;
+    }
+  
+    .hero-text h1 {
+      font-size: 2.5rem;
+    }
+    .hero-text p {
+      font-size: 1rem;
+    }
+    .chat-widget-wrapper {
+      max-width: 95%;
+      height: 400px;
+    }
+  
+    .services-intro h2, .product-intro h2 {
+      font-size: 2rem;
+    }
+    .service-text h3 {
+        font-size: 1.6rem;
+    }
+  
+    .kai-feature-card {
+        padding: 20px;
+    }
+    .slick-prev, .slick-next {
+        top: 35%; /* Ajuste para que las flechas no estorben */
+        font-size: 30px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+      .header button {
+          padding: 8px 15px;
+          font-size: 0.9rem;
+      }
+      .logo {
+          height: 35px;
+      }
+      .hero-text h1 {
+          font-size: 2rem;
+      }
+      .hero-text p {
+          font-size: 0.9rem;
+      }
+      .chat-container {
+          margin-top: 30px;
+      }
+      .chat-widget-wrapper {
+          height: 350px;
+      }
+      .service-image img {
+          height: 220px;
+      }
+      .service-text h3 {
+          font-size: 1.4rem;
+      }
+      .product-intro h2 {
+          font-size: 1.8rem;
+      }
+      .slick-dots {
+          bottom: -40px;
+      }
   }
