@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import Particles, { initParticlesEngine } from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
 import ChatWidget from './components/ChatWidget';
 import './App.css';
 import logo from './assets/logo-white-bg.png';
@@ -16,6 +18,16 @@ import servicioScientist from './assets/servicio-scientist.jpg';
 // --- COMPONENTE PRINCIPAL DE LA APLICACIÓN ---
 function App() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [init, setInit] = useState(false);
+
+  // Inicializa el motor de partículas una sola vez
+  useEffect(() => {
+    initParticlesEngine(async (engine) => {
+      await loadSlim(engine);
+    }).then(() => {
+      setInit(true);
+    });
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -23,9 +35,73 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const particleOptions = useMemo(
+    () => ({
+      background: {
+        color: {
+          value: "transparent",
+        },
+      },
+      fpsLimit: 60,
+      interactivity: {
+        events: {
+          onHover: {
+            enable: true,
+            mode: "repulse",
+          },
+        },
+        modes: {
+          repulse: {
+            distance: 100,
+            duration: 0.4,
+          },
+        },
+      },
+      particles: {
+        color: {
+          value: "#a0a0a0",
+        },
+        links: {
+          color: "#a0a0a0",
+          distance: 150,
+          enable: true,
+          opacity: 0.2,
+          width: 1,
+        },
+        move: {
+          direction: "none",
+          enable: true,
+          outModes: {
+            default: "bounce",
+          },
+          random: false,
+          speed: 1,
+          straight: false,
+        },
+        number: {
+          density: {
+            enable: true,
+          },
+          value: 80,
+        },
+        opacity: {
+          value: 0.3,
+        },
+        shape: {
+          type: "circle",
+        },
+        size: {
+          value: { min: 1, max: 3 },
+        },
+      },
+      detectRetina: true,
+    }),
+    [],
+  );
+
   const servicesData = [
     { title: "IA Consulting", description: "Transforme su Core de Negocio con IA. Integramos soluciones de IA Generativa y Machine Learning para crear sistemas que razonan, predicen y optimizan.", image: servicioIA },
-    { title: "Data Analysts & BI", description: "Descubra la verdad oculta en sus datos. Traducimos data compleja en dashboards interactivos e informes ejecutivos que potencian decisiones estratégicas.", image: servicioAnalyst },
+    { title: "Data Analysts / BI", description: "Descubra la verdad oculta en sus datos. Traducimos data compleja en dashboards interactivos e informes ejecutivos que potencian decisiones estratégicas.", image: servicioAnalyst },
     { title: "Data Engineering", description: "Construimos las autopistas de su información. Diseñamos infraestructuras de datos en la nube que son robustas, escalables y seguras.", image: servicioEngineering },
     { title: "Data Science", description: "El futuro de su negocio, modelado hoy. Usamos técnicas avanzadas para resolver problemas complejos, desde la predicción de churn hasta la optimización de riesgo.", image: servicioScientist }
   ];
@@ -39,11 +115,15 @@ function App() {
     { icon: "💻", title: "Code Review por IA", description: "Acelere sus ciclos de desarrollo. Kai puede realizar revisiones de código en sus Pull Requests de Dataform y LookML, garantizando calidad y consistencia." }
   ];
 
+  if (!init) {
+    return <></>;
+  }
+
   return (
     <div id="app-container">
       <Header isScrolled={isScrolled} />
       <main className="content-wrap">
-        <HeroSection />
+        <HeroSection particleOptions={particleOptions} />
         <ServicesSection services={servicesData} />
         <ProductSection features={kaiFeatures} />
       </main>
@@ -65,8 +145,12 @@ const Header = ({ isScrolled }) => (
     </header>
 );
 
-const HeroSection = () => (
+const HeroSection = ({ particleOptions }) => (
   <section className="hero">
+    <Particles
+        id="tsparticles"
+        options={particleOptions}
+    />
     <div className="hero-text">
       <h1>Inteligencia <span className="highlight">Artificial & Data</span> para líderes en LATAM.</h1>
       <p>Transformamos datos en su activo más valioso. Interactúe con nuestro asistente y descubra el potencial que podemos desbloquear juntos.</p>
