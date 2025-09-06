@@ -3,24 +3,23 @@ import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import ChatWidget from './components/ChatWidget';
 import './App.css';
-import logo from './assets/logo-white-bg.png';
+import logo from './assets/logo.png'; // Logo principal
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-// --- IMPORTA TUS IMÁGENES DE SERVICIOS ---
+// --- IMÁGENES DE SERVICIOS ---
 import servicioIA from './assets/servicio-ia.jpg';
 import servicioAnalyst from './assets/servicio-analyst.jpg';
 import servicioEngineering from './assets/servicio-engineering.jpg';
 import servicioScientist from './assets/servicio-scientist.jpg';
 
 
-// --- COMPONENTE PRINCIPAL DE LA APLICACIÓN ---
+// --- COMPONENTE PRINCIPAL ---
 function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [init, setInit] = useState(false);
 
-  // Inicializa el motor de partículas una sola vez
   useEffect(() => {
     initParticlesEngine(async (engine) => {
       await loadSlim(engine);
@@ -62,7 +61,7 @@ function App() {
           value: "#a0a0a0",
         },
         links: {
-          color: "#a0a0a0",
+          color: "#ffffff",
           distance: 150,
           enable: true,
           opacity: 0.2,
@@ -101,7 +100,7 @@ function App() {
 
   const servicesData = [
     { title: "IA Consulting", description: "Transforme su Core de Negocio con IA. Integramos soluciones de IA Generativa y Machine Learning para crear sistemas que razonan, predicen y optimizan.", image: servicioIA },
-    { title: "Data Analysts / BI", description: "Descubra la verdad oculta en sus datos. Traducimos data compleja en dashboards interactivos e informes ejecutivos que potencian decisiones estratégicas.", image: servicioAnalyst },
+    { title: "Data Analysts & BI", description: "Descubra la verdad oculta en sus datos. Traducimos data compleja en dashboards interactivos e informes ejecutivos que potencian decisiones estratégicas.", image: servicioAnalyst },
     { title: "Data Engineering", description: "Construimos las autopistas de su información. Diseñamos infraestructuras de datos en la nube que son robustas, escalables y seguras.", image: servicioEngineering },
     { title: "Data Science", description: "El futuro de su negocio, modelado hoy. Usamos técnicas avanzadas para resolver problemas complejos, desde la predicción de churn hasta la optimización de riesgo.", image: servicioScientist }
   ];
@@ -116,7 +115,7 @@ function App() {
   ];
 
   if (!init) {
-    return <></>;
+    return null; // Renderiza null o un spinner de carga mientras se inicializa
   }
 
   return (
@@ -132,7 +131,7 @@ function App() {
   );
 }
 
-// --- SUB-COMPONENTES DE LA PÁGINA ---
+// --- SUB-COMPONENTES ---
 
 const Header = ({ isScrolled }) => (
     <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
@@ -169,17 +168,15 @@ const ServicesSection = ({ services }) => (
       <h2>Nuestras Capacidades</h2>
       <p>Desde la estrategia hasta la implementación, nuestro equipo senior lo acompaña en cada paso de su viaje hacia una cultura basada en datos.</p>
     </div>
-    <div className="service-item-wrapper">
-      {services.map((service, index) => (
-        <ServiceItem
-          key={index}
-          title={service.title}
-          description={service.description}
-          image={service.image}
-          isReversed={index % 2 !== 0}
-        />
-      ))}
-    </div>
+    {services.map((service, index) => (
+      <ServiceItem
+        key={index}
+        title={service.title}
+        description={service.description}
+        image={service.image}
+        isReversed={index % 2 !== 0}
+      />
+    ))}
   </section>
 );
 
@@ -195,7 +192,6 @@ const ServiceItem = ({ title, description, image, isReversed }) => (
     </div>
   </div>
 );
-
 
 const ProductSection = ({ features }) => {
     const settings = {
@@ -231,7 +227,6 @@ const ProductSection = ({ features }) => {
     );
 };
 
-
 const KaiFeatureCard = ({ icon, title, description }) => (
   <div className="kai-feature-card">
     <div className="icon">{icon}</div>
@@ -245,6 +240,5 @@ const Footer = () => (
         <p>&copy; {new Date().getFullYear()} Guana Cloud. Pura Vida y Pura Data.</p>
     </footer>
 );
-
 
 export default App;
