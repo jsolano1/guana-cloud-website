@@ -170,7 +170,7 @@
   .service-item-wrapper {
     max-width: 1400px; /* Contenedor interno para limitar el texto */
     margin: 0 auto;
-    padding: 0 5%;
+    padding: 0 1%;
   }
   
   .service-item {
