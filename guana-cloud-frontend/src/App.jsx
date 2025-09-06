@@ -3,7 +3,7 @@ import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import ChatWidget from './components/ChatWidget';
 import './App.css';
-import logo from './assets/logo.png'; // Logo principal
+import logo from './assets/logo-white-bg.png'; 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
